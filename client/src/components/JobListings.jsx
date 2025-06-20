@@ -24,12 +24,13 @@ export default function JobListings() {
     skills: '',
   });
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/jobs', {
+        const response = await axios.get(`${baseURL}/api/jobs`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setJobs(response.data);
@@ -43,7 +44,7 @@ export default function JobListings() {
       }
     };
     fetchJobs();
-  }, []);
+  }, [baseURL]);
 
   const handleFilter = () => {
     let filtered = jobs;
@@ -69,7 +70,7 @@ export default function JobListings() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/jobs', newJob, {
+      const response = await axios.post(`${baseURL}/api/jobs`, newJob, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       const createdJob = response.data;
@@ -112,7 +113,7 @@ export default function JobListings() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `/api/jobs/${editJob._id}`,
+        `${baseURL}/api/jobs/${editJob._id}`,
         updatedData,
         {
           headers: { 'Authorization': `Bearer ${token}` },
@@ -156,7 +157,7 @@ export default function JobListings() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/jobs/${job._id}`, {
+        await axios.delete(`${baseURL}/api/jobs/${job._id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setJobs(jobs.filter((j) => j._id !== job._id));

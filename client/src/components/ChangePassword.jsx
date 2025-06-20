@@ -10,6 +10,7 @@ export default function ChangePassword() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -27,7 +28,7 @@ export default function ChangePassword() {
       return;
     }
     try {
-      await axios.post('/api/reset-password', { token, password });
+      await axios.post(`${baseURL}/api/reset-password`, { token, password });
       setMsg('Password changed successfully. Please login.');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {

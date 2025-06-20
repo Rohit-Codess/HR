@@ -9,12 +9,13 @@ export default function CandidateDetails() {
   const [candidate, setCandidate] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchCandidate = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/candidates/${id}`, {
+        const response = await fetch(`${baseURL}/api/candidates/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -44,7 +45,7 @@ export default function CandidateDetails() {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`/api/candidates/${candidate._id}`, {
+        await axios.delete(`${baseURL}/api/candidates/${candidate._id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },

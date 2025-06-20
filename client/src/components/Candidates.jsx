@@ -23,13 +23,14 @@ export default function Candidates() {
     experience: '',
   });
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch candidates from the backend on component mount
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/candidates', {
+        const response = await axios.get(`${baseURL}/api/candidates`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -72,7 +73,7 @@ export default function Candidates() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/candidates', newCandidate, {
+      const response = await axios.post(`${baseURL}/api/candidates`, newCandidate, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -117,7 +118,7 @@ export default function Candidates() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `/api/candidates/${editCandidate._id}`,
+        `${baseURL}/api/candidates/${editCandidate._id}`,
         updatedData,
         {
           headers: { 'Authorization': `Bearer ${token}` },
@@ -161,7 +162,7 @@ export default function Candidates() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/candidates/${candidate._id}`, {
+        await axios.delete(`${baseURL}/api/candidates/${candidate._id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

@@ -28,10 +28,11 @@ export default function UserPanel() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get('/api/users/me', {
+    axios.get(`${baseURL}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -50,7 +51,7 @@ export default function UserPanel() {
         });
       })
       .catch(() => setMsg('Failed to load user details'));
-  }, []);
+  }, [baseURL]);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -61,7 +62,7 @@ export default function UserPanel() {
     setMsg('');
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.put('/api/users/me', form, {
+      const res = await axios.put(`${baseURL}/api/users/me`, form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUser(res.data);
@@ -82,7 +83,7 @@ export default function UserPanel() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        '/api/users/change-password',
+        `${baseURL}/api/users/change-password`,
         { currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );

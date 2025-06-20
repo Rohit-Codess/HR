@@ -9,12 +9,13 @@ export default function OfferLetterDetails() {
   const [offerLetter, setOfferLetter] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchOfferLetter = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`/api/offerLetter/${id}`, {
+        const response = await axios.get(`${baseURL}/api/offerLetter/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setOfferLetter(response.data);
@@ -25,7 +26,7 @@ export default function OfferLetterDetails() {
       }
     };
     fetchOfferLetter();
-  }, [id]);
+  }, [id, baseURL]);
 
   const handleDeleteOfferLetter = async (offerLetter) => {
     const result = await Swal.fire({
@@ -41,7 +42,7 @@ export default function OfferLetterDetails() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/offerLetter/${offerLetter._id}`, {
+        await axios.delete(`${baseURL}/api/offerLetter/${offerLetter._id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         Swal.fire({

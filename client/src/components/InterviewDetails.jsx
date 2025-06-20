@@ -9,12 +9,13 @@ export default function InterviewDetails() {
   const [interview, setInterview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchInterview = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`/api/interviews/${id}`, {
+        const response = await axios.get(`${baseURL}/api/interviews/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setInterview(response.data);
@@ -25,7 +26,7 @@ export default function InterviewDetails() {
       }
     };
     fetchInterview();
-  }, [id]);
+  }, [id, baseURL]);
 
   const handleDeleteInterview = async (interview) => {
     const result = await Swal.fire({
@@ -41,7 +42,7 @@ export default function InterviewDetails() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/interviews/${interview._id}`, {
+        await axios.delete(`${baseURL}/api/interviews/${interview._id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         Swal.fire({

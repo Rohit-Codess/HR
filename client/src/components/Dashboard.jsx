@@ -33,6 +33,7 @@ export default function Dashboard() {
   const [interviewsData, setInterviewsData] = useState([]);
   const [offerLettersData, setOfferLettersData] = useState([]);
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch data from backend APIs
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function Dashboard() {
       try {
         const token = localStorage.getItem('token');
         // Fetch Jobs
-        const jobsResponse = await fetch('/api/jobs', {
+        const jobsResponse = await fetch(`${baseURL}/api/jobs`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -50,7 +51,7 @@ export default function Dashboard() {
         setJobsData(jobs);
 
         // Fetch Candidates
-        const candidatesResponse = await fetch('/api/candidates', {
+        const candidatesResponse = await fetch(`${baseURL}/api/candidates`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -60,7 +61,7 @@ export default function Dashboard() {
         setCandidatesData(candidates);
 
         // Fetch Interviews
-        const interviewsResponse = await fetch('/api/interviews', {
+        const interviewsResponse = await fetch(`${baseURL}/api/interviews`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -70,7 +71,7 @@ export default function Dashboard() {
         setInterviewsData(interviews);
 
         // Fetch Offer Letters
-        const offerLettersResponse = await fetch('/api/offerLetter', {
+        const offerLettersResponse = await fetch(`${baseURL}/api/offerLetter`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -88,7 +89,7 @@ export default function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [baseURL]);
 
   // Chart Data and Options
   const jobsChartData = {

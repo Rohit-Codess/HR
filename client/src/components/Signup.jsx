@@ -23,6 +23,7 @@ export default function Signup({ setUser }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false); // <-- Add loading state
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -46,7 +47,7 @@ export default function Signup({ setUser }) {
     }
     setLoading(true); // Start loader
     try {
-      const response = await axios.post('/api/register', form);
+      const response = await axios.post(`${baseURL}/api/register`, form);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setUser(response.data.user);

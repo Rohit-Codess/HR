@@ -24,6 +24,7 @@ export default function Interviews() {
   });
   const [candidates, setCandidates] = useState([]);
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   // Set a default dateTime value when the component mounts
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Interviews() {
     const fetchInterviews = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/interviews', {
+        const response = await axios.get(`${baseURL}/api/interviews`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setInterviews(response.data);
@@ -53,19 +54,19 @@ export default function Interviews() {
       }
     };
     fetchInterviews();
-  }, []);
+  }, [baseURL]);
 
   // Fetch candidates for the dropdown
   useEffect(() => {
     const fetchCandidates = async () => {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/candidates', {
+      const response = await axios.get(`${baseURL}/api/candidates`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       setCandidates(response.data);
     };
     fetchCandidates();
-  }, []);
+  }, [baseURL]);
 
   const handleFilter = () => {
     let filtered = interviews;
@@ -91,7 +92,7 @@ export default function Interviews() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/interviews', {
+      const response = await axios.post(`${baseURL}/api/interviews`, {
         ...newInterview,
         dateTime: new Date(newInterview.dateTime).toISOString(),
       }, {
@@ -139,7 +140,7 @@ export default function Interviews() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `/api/interviews/${editInterview._id}`,
+        `${baseURL}/api/interviews/${editInterview._id}`,
         updatedData,
         {
           headers: { 'Authorization': `Bearer ${token}` },
@@ -184,7 +185,7 @@ export default function Interviews() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/interviews/${interview._id}`, {
+        await axios.delete(`${baseURL}/api/interviews/${interview._id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setInterviews(interviews.filter((i) => i._id !== interview._id));

@@ -24,13 +24,14 @@ export default function OfferLetter() {
   });
   const [candidates, setCandidates] = useState([]);
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch offer letters from the backend on component mount
   useEffect(() => {
     const fetchOfferLetters = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/offerLetter', {
+        const response = await axios.get(`${baseURL}/api/offerLetter`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setOfferLetters(response.data);
@@ -44,19 +45,19 @@ export default function OfferLetter() {
       }
     };
     fetchOfferLetters();
-  }, []);
+  }, [baseURL]);
 
   // Fetch candidates for the dropdown
   useEffect(() => {
     const fetchCandidates = async () => {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/candidates', {
+      const response = await axios.get(`${baseURL}/api/candidates`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       setCandidates(response.data);
     };
     fetchCandidates();
-  }, []);
+  }, [baseURL]);
 
   const handleFilter = () => {
     let filtered = offerLetters;
@@ -83,7 +84,7 @@ export default function OfferLetter() {
     try {
       const token = localStorage.getItem('token');
       const candidate = candidates.find(c => c._id === newOfferLetter.candidateId);
-      const response = await axios.post('/api/offerLetter', {
+      const response = await axios.post(`${baseURL}/api/offerLetter`, {
         ...newOfferLetter,
         candidateName: candidate ? candidate.name : '',
       }, {
@@ -129,7 +130,7 @@ export default function OfferLetter() {
       const token = localStorage.getItem('token');
       const candidate = candidates.find(c => c._id === updatedData.candidateId);
       const response = await axios.put(
-        `/api/offerLetter/${editOfferLetter._id}`,
+        `${baseURL}/api/offerLetter/${editOfferLetter._id}`,
         {
           ...updatedData,
           candidateName: candidate ? candidate.name : editOfferLetter.candidateName,
@@ -176,7 +177,7 @@ export default function OfferLetter() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/offerLetter/${offerLetter._id}`, {
+        await axios.delete(`${baseURL}/api/offerLetter/${offerLetter._id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setOfferLetters(offerLetters.filter((o) => o._id !== offerLetter._id));

@@ -8,12 +8,13 @@ export default function JobDetails() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`/api/jobs/${id}`, {
+        const response = await axios.get(`${baseURL}/api/jobs/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         setJob(response.data);
@@ -24,7 +25,7 @@ export default function JobDetails() {
       }
     };
     fetchJob();
-  }, [id]);
+  }, [id, baseURL]);
 
   if (loading) {
     return (

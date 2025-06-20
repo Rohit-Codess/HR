@@ -5,12 +5,13 @@ import Swal from 'sweetalert2';
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/admin/users', {
+        const response = await axios.get(`${baseURL}/api/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(response.data);
@@ -19,7 +20,7 @@ export default function AdminPanel() {
       }
     };
     fetchUsers();
-  }, []);
+  }, [baseURL]);
 
   const handleDeleteUser = async (user) => {
     const result = await Swal.fire({
@@ -35,7 +36,7 @@ export default function AdminPanel() {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`/api/admin/users/${user._id}`, {
+        await axios.delete(`${baseURL}/api/admin/users/${user._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(users.filter((u) => u._id !== user._id));

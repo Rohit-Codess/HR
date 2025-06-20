@@ -17,6 +17,7 @@ export default function Login({ setUser }) {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const navigate = useNavigate();
   const { token } = useParams();
@@ -39,7 +40,7 @@ export default function Login({ setUser }) {
     e.preventDefault();
     setLoading(true); // Start loader
     try {
-      const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post(`${baseURL}/api/login`, { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setUser(response.data.user);
@@ -54,7 +55,7 @@ export default function Login({ setUser }) {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/forgot-password', { email });
+      await axios.post(`${baseURL}/api/forgot-password`, { email });
       setMsg('Reset link sent! Please check your email.');
       setError('');
     } catch (err) {
@@ -74,7 +75,7 @@ export default function Login({ setUser }) {
       return;
     }
     try {
-      await axios.post('/api/reset-password', {
+      await axios.post(`${baseURL}/api/reset-password`, {
         token,
         password: newPassword,
       });

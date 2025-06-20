@@ -96,11 +96,12 @@ function isTokenExpired(token) {
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && !isTokenExpired(token)) {
-      axios.get('/api/users/me', {
+      axios.get(`${baseURL}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(response => {
@@ -117,7 +118,7 @@ function App() {
       localStorage.removeItem('user');
       setUser(null);
     }
-  }, []);
+  }, [baseURL]);
 
   const handleLogout = () => {
     Swal.fire({
