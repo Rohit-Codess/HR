@@ -30,7 +30,7 @@ export default function CandidateDetails() {
       }
     };
     fetchCandidate();
-  }, [id]);
+  }, [id,baseURL]);
 
   const handleDeleteCandidate = async (candidate) => {
     const result = await Swal.fire({

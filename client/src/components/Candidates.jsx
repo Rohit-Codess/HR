@@ -47,7 +47,7 @@ export default function Candidates() {
       }
     };
     fetchCandidates();
-  }, []);
+  }, [baseURL]);
 
   const handleFilter = () => {
     let filtered = candidates;
