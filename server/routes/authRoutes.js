@@ -133,7 +133,7 @@ router.post("/forgot-password", async (req, res) => {
           <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.05);padding:40px;">
             <tr>
               <td align="center" style="padding-bottom:20px;">
-                <img src="/assets/logo.jpg" alt="HR Recruiter Logo" width="80" height="80" style="border-radius: 50%;"/>
+                <img src="https://hr-lake.vercel.app/assets/logo.jpg" alt="HR Recruiter Logo" width="80" height="80" style="border-radius: 50%;"/>
                 <h2 style="margin-top:10px;color:#333333;">Reset Your Password</h2>
               </td>
             </tr>
