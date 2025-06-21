@@ -163,7 +163,7 @@ function App() {
               user={user}
               onLogout={handleLogout}
             />
-            <main className="flex-1 overflow-y-auto bg-gray-50 pl-0 lg:pl-4 pr-4 pt-4 pb-4">
+            <main className="flex-1 overflow-y-auto bg-gray-50 pl-4 lg:pl-4 pb-4">
               <Routes>
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/jobs" element={<ProtectedRoute><JobListings /></ProtectedRoute>} />
