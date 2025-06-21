@@ -7,7 +7,7 @@ const User = require("../models/User");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
-const baseURL = process.env.VITE_API_BASE_URL;
+const baseURL = process.env.CLIENT_URL;
 
 // Register
 router.post(
