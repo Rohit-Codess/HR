@@ -8,7 +8,22 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({ origin: 'https://hr-backend-t59t.onrender.com' }));
+const allowedOrigins = [
+  'http://localhost:5173', // local dev
+  'https://hr-lake.vercel.app', // deployed frontend (replace with your actual Vercel domain)
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
