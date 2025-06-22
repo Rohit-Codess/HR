@@ -6,7 +6,7 @@ export default function OfferLetterEditForm({ offerLetter, candidates, onSave, o
     position: offerLetter.position || '',
     dateIssued: offerLetter.dateIssued ? offerLetter.dateIssued.slice(0, 10) : '',
     status: offerLetter.status || 'Pending',
-    content: offerLetter.content || '',
+    // content: offerLetter.content || '',
     salary: offerLetter.salary || '',
     startDate: offerLetter.startDate || '',
     notes: offerLetter.notes || '',
@@ -101,7 +101,7 @@ export default function OfferLetterEditForm({ offerLetter, candidates, onSave, o
               required
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block text-gray-700 font-medium mb-1">Content</label>
             <textarea
               name="content"
@@ -111,7 +111,7 @@ export default function OfferLetterEditForm({ offerLetter, candidates, onSave, o
               rows="5"
               required
             />
-          </div>
+          </div> */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Notes</label>
             <textarea
