@@ -108,7 +108,11 @@ export default function OfferLetterDetails() {
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <span className="text-base sm:text-lg font-semibold text-gray-700">Date Issued:</span>
-            <span className="text-base sm:text-lg text-gray-600">{offerLetter.dateIssued}</span>
+            <span className="text-base sm:text-lg text-gray-600">
+              {offerLetter.dateIssued
+                ? new Date(offerLetter.dateIssued).toISOString().split('T')[0]
+                : 'N/A'}
+            </span>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <span className="text-base sm:text-lg font-semibold text-gray-700">Status:</span>
@@ -139,13 +143,17 @@ export default function OfferLetterDetails() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <span className="text-base sm:text-lg font-semibold text-gray-700">Created At:</span>
             <span className="text-base sm:text-lg text-gray-600">
-              {offerLetter.createdAt ? new Date(offerLetter.createdAt).toLocaleDateString() : 'N/A'}
+              {offerLetter.createdAt
+                ? new Date(offerLetter.createdAt).toISOString().split('T')[0]
+                : 'N/A'}
             </span>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
             <span className="text-base sm:text-lg font-semibold text-gray-700">Updated At:</span>
             <span className="text-base sm:text-lg text-gray-600">
-              {offerLetter.updatedAt ? new Date(offerLetter.updatedAt).toLocaleDateString() : 'N/A'}
+              {offerLetter.updatedAt
+                ? new Date(offerLetter.updatedAt).toISOString().split('T')[0]
+                : 'N/A'}
             </span>
           </div>
         </div>
