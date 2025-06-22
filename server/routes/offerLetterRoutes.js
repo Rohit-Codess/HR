@@ -57,6 +57,7 @@ router.delete('/:id', auth, async (req, res) => {
 // Send offer letter via email
 router.post('/:id/send-email', auth, async (req, res) => {
   try {
+    const { status } = req.body;
     const offerLetter = await OfferLetter.findById(req.params.id);
     if (!offerLetter) return res.status(404).json({ error: 'Offer letter not found' });
 
@@ -65,23 +66,37 @@ router.post('/:id/send-email', auth, async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
+    let subject, content;
+    if (status === 'Accepted') {
+      subject = `Offer Letter for ${offerLetter.position}`;
+      content = `Dear ${candidate.name},\n\nWe are pleased to offer you the position of ${offerLetter.position} at our company. Based on your interview and qualifications, we believe you are a great fit for the role. The offered salary for this position is ${offerLetter.salary}, and your expected start date will be ${offerLetter.startDate}.\n\nPlease review the attached offer letter for detailed terms and respond by [Response Deadline].\n\nWe look forward to your response.\n\nBest regards,\nHR Team`;
+    } else if (status === 'Rejected') {
+      subject = `Application Update for ${offerLetter.position}`;
+      content = `Dear ${candidate.name},\n\nThank you for your interest in the position of ${offerLetter.position} at our company. We appreciate the time and effort you invested in the application and interview process.\n\nAfter careful consideration, we regret to inform you that we will not be moving forward with your application at this time.\n\nWe wish you all the best in your future endeavors.\n\nBest regards,\nHR Team`;
+    } else {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER, // your email
-        pass: process.env.EMAIL_PASS, // your app password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     await transporter.sendMail({
       from: user.email,
       to: candidate.email,
-      subject: `Offer Letter for ${offerLetter.position}`,
-      text: offerLetter.content,
-      html: `<p>${offerLetter.content.replace(/\n/g, '<br/>')}</p>`,
+      subject,
+      text: content,
+      html: `<p>${content.replace(/\n/g, '<br/>')}</p>`,
     });
 
-    res.json({ message: 'Email sent successfully' });
+    offerLetter.status = status;
+    await offerLetter.save();
+
+    res.json({ message: 'Email sent and status updated successfully', status });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to send email' });

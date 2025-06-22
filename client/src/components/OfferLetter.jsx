@@ -225,6 +225,37 @@ export default function OfferLetter() {
     }
   };
 
+  const handleSendStatusEmail = async (offerLetter, status) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `${baseURL}/api/offerLetter/${offerLetter._id}/send-email`,
+        { status },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // Update status in UI
+      setOfferLetters(offerLetters.map(o =>
+        o._id === offerLetter._id ? { ...o, status } : o
+      ));
+      setFilteredOfferLetters(filteredOfferLetters.map(o =>
+        o._id === offerLetter._id ? { ...o, status } : o
+      ));
+      Swal.fire({
+        icon: 'success',
+        title: status === 'Accepted' ? 'Selected!' : 'Rejected!',
+        text: `Offer letter email sent to candidate and status updated to ${status}.`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: err.response?.data?.error || 'Failed to send email.',
+      });
+    }
+  };
+
   return (
     <div className="flex-1 p-2 sm:p-4 md:p-6 lg:p-8 bg-gradient-to-r from-gray-50 to-gray-100 min-h-screen">
       {/* Header */}
@@ -392,6 +423,38 @@ export default function OfferLetter() {
                     >
                       {deliveredIds.includes(offerLetter._id) ? 'Delivered' : 'Send Email'}
                     </button>
+                    {offerLetter.status === 'Pending' && (
+                      <>
+                        <button
+                          onClick={() => handleSendStatusEmail(offerLetter, 'Accepted')}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-sm font-semibold"
+                        >
+                          Selected
+                        </button>
+                        <button
+                          onClick={() => handleSendStatusEmail(offerLetter, 'Rejected')}
+                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-sm font-semibold"
+                        >
+                          Rejected
+                        </button>
+                      </>
+                    )}
+                    {offerLetter.status === 'Accepted' && (
+                      <button
+                        disabled
+                        className="px-4 py-2 bg-green-400 text-white rounded-lg cursor-not-allowed font-semibold"
+                      >
+                        Delivered
+                      </button>
+                    )}
+                    {offerLetter.status === 'Rejected' && (
+                      <button
+                        disabled
+                        className="px-4 py-2 bg-red-400 text-white rounded-lg cursor-not-allowed font-semibold"
+                      >
+                        Delivered
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
