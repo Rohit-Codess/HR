@@ -1,31 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  ArcElement,
-  LineElement,
-  PointElement,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import { Chart, Filler } from 'chart.js';
 import { Bar, Pie, Doughnut, Line } from 'react-chartjs-2';
 import { format, subDays, eachDayOfInterval, startOfDay, endOfDay } from 'date-fns';
 import Swal from 'sweetalert2';
 
-// Register Chart.js components
-ChartJS.register(
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  ArcElement,
-  LineElement,
-  PointElement,
-  Tooltip,
-  Legend
-);
+Chart.register(Filler);
 
 export default function Dashboard() {
   const [jobsData, setJobsData] = useState([]);
