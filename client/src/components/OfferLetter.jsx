@@ -547,7 +547,7 @@ export default function OfferLetter() {
                   required
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Content
                 </label>
@@ -561,7 +561,7 @@ export default function OfferLetter() {
                   placeholder="Enter the offer letter content..."
                   required
                 />
-              </div>
+              </div> */}
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Notes
