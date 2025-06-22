@@ -8,7 +8,7 @@ import {
   LinearScale,
   Title,
   CategoryScale,
-  Filler 
+  Filler // <-- import Filler
 } from 'chart.js';
 import { Bar, Pie, Doughnut, Line } from 'react-chartjs-2';
 import { format, subDays, eachDayOfInterval, startOfDay, endOfDay } from 'date-fns';
