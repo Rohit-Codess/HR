@@ -23,7 +23,6 @@ export default function OfferLetter() {
     notes: '',
   });
   const [candidates, setCandidates] = useState([]);
-  const [deliveredIds, setDeliveredIds] = useState([]);
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -99,7 +98,6 @@ export default function OfferLetter() {
         position: '',
         dateIssued: new Date().toISOString().split('T')[0],
         status: 'Pending',
-        // content: `Dear [Candidate Name],\n\nWe are pleased to offer you the position of [Position] at our company. [Add details about the role, company, and terms of employment here.]\n\nWe look forward to your response.\n\nBest regards,\nHR Team`,
         salary: '',
         startDate: '',
         notes: '',
@@ -200,30 +198,6 @@ export default function OfferLetter() {
     }
   };
 
-  const handleSendEmail = async (offerLetter) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        `${baseURL}/api/offerLetter/${offerLetter._id}/send-email`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setDeliveredIds([...deliveredIds, offerLetter._id]);
-      Swal.fire({
-        icon: 'success',
-        title: 'Delivered!',
-        text: 'Offer letter email sent to candidate.',
-        timer: 1500,
-        showConfirmButton: false,
-      });
-    } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed!',
-        text: err.response?.data?.error || 'Failed to send email.',
-      });
-    }
-  };
 
   const handleSendStatusEmail = async (offerLetter, status) => {
     try {
@@ -406,23 +380,7 @@ export default function OfferLetter() {
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDeleteOfferLetter(offerLetter)}
-                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-sm font-semibold"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => handleSendEmail(offerLetter)}
-                      disabled={deliveredIds.includes(offerLetter._id)}
-                      className={`px-4 py-2 rounded-lg font-semibold shadow-sm transition-colors duration-200 ${
-                        deliveredIds.includes(offerLetter._id)
-                          ? 'bg-green-400 text-white cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}
-                    >
-                      {deliveredIds.includes(offerLetter._id) ? 'Delivered' : 'Send Email'}
-                    </button>
+                    {/* Only show for Pending */}
                     {offerLetter.status === 'Pending' && (
                       <>
                         <button
@@ -547,21 +505,6 @@ export default function OfferLetter() {
                   required
                 />
               </div>
-              {/* <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Content
-                </label>
-                <textarea
-                  value={newOfferLetter.content}
-                  onChange={(e) =>
-                    setNewOfferLetter({ ...newOfferLetter, content: e.target.value })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  rows="5"
-                  placeholder="Enter the offer letter content..."
-                  required
-                />
-              </div> */}
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Notes

@@ -133,10 +133,6 @@ export default function OfferLetterDetails() {
             <span className="text-base sm:text-lg text-gray-600">{offerLetter.startDate}</span>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
-            <span className="text-base sm:text-lg font-semibold text-gray-700">Content:</span>
-            <p className="text-base sm:text-lg text-gray-600 whitespace-pre-wrap">{offerLetter.content}</p>
-          </div>
-          <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4">
             <span className="text-base sm:text-lg font-semibold text-gray-700">Notes:</span>
             <p className="text-base sm:text-lg text-gray-600">{offerLetter.notes || 'N/A'}</p>
           </div>
