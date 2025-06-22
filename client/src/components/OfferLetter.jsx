@@ -23,6 +23,7 @@ export default function OfferLetter() {
     notes: '',
   });
   const [candidates, setCandidates] = useState([]);
+  const [deliveredIds, setDeliveredIds] = useState([]);
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -199,6 +200,31 @@ export default function OfferLetter() {
     }
   };
 
+  const handleSendEmail = async (offerLetter) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `${baseURL}/api/offerLetter/${offerLetter._id}/send-email`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setDeliveredIds([...deliveredIds, offerLetter._id]);
+      Swal.fire({
+        icon: 'success',
+        title: 'Delivered!',
+        text: 'Offer letter email sent to candidate.',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: err.response?.data?.error || 'Failed to send email.',
+      });
+    }
+  };
+
   return (
     <div className="flex-1 p-2 sm:p-4 md:p-6 lg:p-8 bg-gradient-to-r from-gray-50 to-gray-100 min-h-screen">
       {/* Header */}
@@ -354,6 +380,17 @@ export default function OfferLetter() {
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 shadow-sm font-semibold"
                     >
                       Delete
+                    </button>
+                    <button
+                      onClick={() => handleSendEmail(offerLetter)}
+                      disabled={deliveredIds.includes(offerLetter._id)}
+                      className={`px-4 py-2 rounded-lg font-semibold shadow-sm transition-colors duration-200 ${
+                        deliveredIds.includes(offerLetter._id)
+                          ? 'bg-green-400 text-white cursor-not-allowed'
+                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {deliveredIds.includes(offerLetter._id) ? 'Delivered' : 'Send Email'}
                     </button>
                   </div>
                 </td>

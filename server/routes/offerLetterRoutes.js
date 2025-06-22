@@ -2,6 +2,8 @@ const express = require('express');
 const OfferLetter = require('../models/OfferLetter');
 const Candidate = require('../models/Candidate');
 const auth = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+const User = require('../models/User');
 const router = express.Router();
 
 // Get all offer letters for user
@@ -50,6 +52,40 @@ router.delete('/:id', auth, async (req, res) => {
   const offerLetter = await OfferLetter.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
   if (!offerLetter) return res.status(404).json({ error: 'Offer letter not found' });
   res.status(204).send();
+});
+
+// Send offer letter via email
+router.post('/:id/send-email', auth, async (req, res) => {
+  try {
+    const offerLetter = await OfferLetter.findById(req.params.id);
+    if (!offerLetter) return res.status(404).json({ error: 'Offer letter not found' });
+
+    const candidate = await require('../models/Candidate').findById(offerLetter.candidateId);
+    if (!candidate) return res.status(404).json({ error: 'Candidate not found' });
+
+    const user = await User.findById(req.user._id);
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // your email
+        pass: process.env.EMAIL_PASS, // your app password
+      },
+    });
+
+    await transporter.sendMail({
+      from: user.email,
+      to: candidate.email,
+      subject: `Offer Letter for ${offerLetter.position}`,
+      text: offerLetter.content,
+      html: `<p>${offerLetter.content.replace(/\n/g, '<br/>')}</p>`,
+    });
+
+    res.json({ message: 'Email sent successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to send email' });
+  }
 });
 
 module.exports = router;
