@@ -17,7 +17,7 @@ export default function OfferLetter() {
     position: '',
     dateIssued: new Date().toISOString().split('T')[0],
     status: 'Pending',
-    content: ``,
+    content: `Dear [Candidate Name],\n\nWe are pleased to offer you the position of [Position] at our company. Based on your interview and qualifications, we believe you are a great fit for the role. The offered salary for this position is [Salary], and your expected start date will be [Start Date].\n\nPlease review the attached offer letter for detailed terms and respond by [Response Deadline].\n\nWe look forward to your response.\n\nBest regards,\nHR Team`,
     salary: '',
     startDate: '',
     notes: '',
@@ -547,7 +547,7 @@ export default function OfferLetter() {
                   required
                 />
               </div>
-              {/* <div>
+              <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Content
                 </label>
@@ -561,7 +561,7 @@ export default function OfferLetter() {
                   placeholder="Enter the offer letter content..."
                   required
                 />
-              </div> */}
+              </div>
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Notes
