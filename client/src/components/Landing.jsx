@@ -86,7 +86,7 @@ export default function Landing() {
         <div className="mb-12 md:mb-0 md:ml-12 flex-1 flex justify-center animate-fadeInRight">
           <Player
             src="/assets/landingImage.json"
-            className="w-[450px] h-[450px] rounded-2xl shadow-lg border-4 border-yellow-200"
+            className="w-[350px] h-[350px]"
             loop
             autoplay
           />
