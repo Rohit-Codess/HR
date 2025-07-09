@@ -11,6 +11,7 @@ const port = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173', // local dev
   'https://hr-lake.vercel.app', // deployed frontend (replace with your actual Vercel domain)
+  'https://hr.itsrohit.org', // deployed frontend (replace with your actual Vercel domain)
 ];
 
 app.use(cors({
